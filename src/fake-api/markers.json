@@ -1,18 +1,26 @@
 {
   "markers": [
     {
+      "title": "Current",
+      "position": {
+        "latitude": 35.05295705433196,
+        "longitude": 135.79114955952988
+      },
+      "type": "green"
+    },
+    {
       "title": "Home",
       "position": {
-        "longitude": 50.44866553935577,
-        "latitude": 30.451962039067208
+        "latitude": 50.44866553935577,
+        "longitude": 30.451962039067208
       },
       "type": "green"
     },
     {
       "title": "Home2",
       "position": {
-        "longitude": 30.451962039067208,
-        "latitude": 50.4486655393557
+        "latitude": 30.451962039067208,
+        "longitude": 50.4486655393557
       },
       "type": "green"
     }

@@ -153,7 +153,6 @@ export default function Map({
   }, [center, map]);
 
   useEffect(() => {
-    //console.log(mode);
     setAdvancedMarkers((prevAdvancedMarkers) => {
       prevAdvancedMarkers.map((marker) => {
         marker.position = null;
