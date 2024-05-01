@@ -1,0 +1,20 @@
+.markerListItem {
+    margin-bottom: 10px;
+    height: 50px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(52, 52, 52, 0.9);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+}
+
+.markerListItem:hover {
+    cursor: pointer;
+    background-color: rgba(52, 52, 52, 0.5);
+}
+
+.markerListItem h2 {
+    font-size: 1.2rem;
+    margin: 0;
+}

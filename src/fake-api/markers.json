@@ -1,0 +1,20 @@
+{
+  "markers": [
+    {
+      "title": "Home",
+      "position": {
+        "longitude": 50.44866553935577,
+        "latitude": 30.451962039067208
+      },
+      "type": "green"
+    },
+    {
+      "title": "Home2",
+      "position": {
+        "longitude": 30.451962039067208,
+        "latitude": 50.4486655393557
+      },
+      "type": "green"
+    }
+  ]
+}

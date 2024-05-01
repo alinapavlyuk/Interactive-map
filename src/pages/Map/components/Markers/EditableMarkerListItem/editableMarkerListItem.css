@@ -1,0 +1,55 @@
+.editable {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.editable:hover {
+    cursor: unset;
+    background-color: rgba(52, 52, 52, 0.9);
+}
+
+.editable > * {
+    height: 30px;
+}
+
+.markerTitleInput {
+    flex-grow: 1;
+    box-sizing: border-box;
+    width: 200px;
+    padding: 5px;
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 4px;
+}
+
+.markerTypeSelect {
+    padding: 5px;
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.markerButton {
+    padding: 8px 12px;
+    background-color: rgba(40, 40, 40, 1);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.markerButton:hover {
+    background-color: #242424;
+}
+
+.textButton {
+    padding: 8px 6px;
+    font-size: 12px;
+}

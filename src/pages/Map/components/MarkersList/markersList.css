@@ -1,0 +1,28 @@
+.markers {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.markers-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+#add-button {
+    cursor: pointer;
+    height: 25px;
+    width: 100%;
+}
+
+#confirm-changes-buttons {
+    display: flex;
+    gap: 20px;
+}
+
+#confirm-changes-buttons > * {
+    cursor: pointer;
+    flex-grow: 1;
+}

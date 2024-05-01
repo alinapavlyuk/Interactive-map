@@ -1,0 +1,14 @@
+.marker-type-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20px;
+    width: 60px;
+    border-radius: 5px;
+}
+
+.marker-type {
+    vertical-align: center;
+    font-size: 15px;
+    padding: 0 10px;
+}
