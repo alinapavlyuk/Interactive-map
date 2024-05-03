@@ -7,7 +7,7 @@ import { Dispatch, ReactElement, SetStateAction } from "react";
 type MapViewProps = {
   mode: string | null;
   markers: IMarker[];
-  onSelectMarker: (latitude: number, longitude: number) => void;
+  onSelectMarker: (lat: number, lng: number) => void;
   setMarkers: Dispatch<SetStateAction<IMarker[]>>;
   setChangesMade: Dispatch<SetStateAction<boolean>>;
   ActionButtons: ReactElement | null;
@@ -61,7 +61,7 @@ export default function MarkersList({
   return (
     <div className="markers">
       {ActionButtons}
-      <ul className="markers-list">
+      <ul className="markers-list" id="list">
         {markers.map((marker) => {
           if (mode == "view") {
             return (

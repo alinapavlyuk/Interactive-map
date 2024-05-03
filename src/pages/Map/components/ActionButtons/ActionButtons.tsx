@@ -5,12 +5,14 @@ type ActionButtonsProps = {
   isDisabled: boolean;
   onSave: () => void;
   onCancel: () => void;
+  onAdd: () => void;
 };
 
 export default function ActionButtons({
   isDisabled,
   onSave,
   onCancel,
+  onAdd,
 }: ActionButtonsProps) {
   return (
     <>
@@ -22,7 +24,7 @@ export default function ActionButtons({
           Cancel
         </button>
       </div>
-      <button id="add-button">
+      <button id="add-button" onClick={onAdd}>
         <FontAwesomeIcon icon={faPlus} />
       </button>
     </>

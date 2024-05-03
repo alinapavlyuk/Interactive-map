@@ -1,4 +1,4 @@
-.markerListItem {
+.marker-list-item {
     margin-bottom: 10px;
     height: 50px;
     padding: 10px 20px;
@@ -9,12 +9,12 @@
     transition: background-color 0.3s ease;
 }
 
-.markerListItem:hover {
+.marker-list-item:hover {
     cursor: pointer;
     background-color: rgba(52, 52, 52, 0.5);
 }
 
-.markerListItem h2 {
+.marker-list-item h2 {
     font-size: 1.2rem;
     margin: 0;
 }

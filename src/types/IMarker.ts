@@ -2,8 +2,8 @@ export interface IMarker {
   title: string;
   type: string;
   position: {
-    latitude: number;
-    longitude: number;
+    lat: number;
+    lng: number;
   };
   id: string;
 }

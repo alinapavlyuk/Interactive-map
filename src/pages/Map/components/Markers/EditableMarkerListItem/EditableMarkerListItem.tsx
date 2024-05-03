@@ -9,7 +9,7 @@ type MarkerItemProps = {
   onChangeTitle: (marker: IMarker, newTitle: string) => void;
   onChangeType: (marker: IMarker, newType: string) => void;
   onDeleteMarker: (marker: IMarker) => void;
-  onSelectMarker: (latitude: number, longitude: number) => void;
+  onSelectMarker: (lat: number, lng: number) => void;
 };
 
 export default function EditableMarkerListItem({
@@ -23,27 +23,27 @@ export default function EditableMarkerListItem({
 
   return (
     type !== "current" && (
-      <li className="markerListItem editable">
+      <li className="marker-list-item editable">
         <input
-          className="markerTitleInput"
+          className="marker-title-input"
           name="title"
-          defaultValue={title}
+          value={title}
           onChange={(event) => {
             onChangeTitle(marker, event.target.value);
           }}
           onClick={() => {
-            onSelectMarker(position.latitude, position.longitude);
+            onSelectMarker(position.lat, position.lng);
           }}
         />
         <select
-          className="markerTypeSelect"
+          className="marker-type-select"
           name="type"
-          defaultValue={type}
+          value={type}
           onChange={(event) => {
             onChangeType(marker, event.target.value);
           }}
           onClick={() => {
-            onSelectMarker(position.latitude, position.longitude);
+            onSelectMarker(position.lat, position.lng);
           }}
         >
           {markerTypes.map((markerType) => {
@@ -55,7 +55,7 @@ export default function EditableMarkerListItem({
           })}
         </select>
         <button
-          className="markerButton"
+          className="marker-button"
           onClick={() => {
             onDeleteMarker(marker);
           }}

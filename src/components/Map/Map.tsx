@@ -71,27 +71,10 @@ export default function Map({
             setCenterPosition(currentPosition);
 
             resolve(currentPosition);
-            // setMarkers((prevMarkers) => {
-            //   if (
-            //     !(prevMarkers.length > 0 && prevMarkers[0].type === "current")
-            //   ) {
-            //     const currentPositionMarker = {
-            //       title: "Current position",
-            //       type: "current",
-            //       position: {
-            //         latitude: currentPosition.lat,
-            //         longitude: currentPosition.lng,
-            //       },
-            //       id: "0",
-            //     };
-            //     return [currentPositionMarker, ...prevMarkers];
-            //   }
-            //   return prevMarkers;
-            // });
           },
           () => {
             setCenterPosition(defaultPosition);
-            resolve(defaultPosition);
+            resolve(null);
           },
         );
       } else {
@@ -111,12 +94,21 @@ export default function Map({
     const mapMarker = new AdvancedMarkerElementClass.current({
       map: map.current,
       position: {
-        lat: marker.position.latitude,
-        lng: marker.position.longitude,
+        lat: marker.position.lat,
+        lng: marker.position.lng,
       },
       title: marker.title,
       content: pinBackground.element,
     });
+
+    const content = mapMarker.content as HTMLElement;
+    content.style.opacity = "0";
+    content.addEventListener("animationend", () => {
+      content.classList.remove("drop");
+      content.style.opacity = "1";
+    });
+    content.classList.add("drop");
+
     return mapMarker;
   };
 
@@ -127,13 +119,33 @@ export default function Map({
     const currentPositionMarker = {
       title: "current position",
       position: {
-        latitude: currentPosition.lat,
-        longitude: currentPosition.lng,
+        lat: currentPosition.lat,
+        lng: currentPosition.lng,
       },
       type: "current",
       id: "-1",
     };
     createMarker(currentPositionMarker);
+  };
+
+  const addCurrentPositionButton = (currentPosition: {
+    lat: number;
+    lng: number;
+  }) => {
+    const controlDiv = document.createElement("div");
+    const controlUI = document.createElement("button");
+
+    controlUI.classList.add("ui-button");
+    controlUI.innerHTML =
+      '<img src="location_icon.png" id="current_location_button"/>';
+    //controlUI.innerText = "Reset the example";
+    controlUI.addEventListener("click", () => {
+      setCenterPosition(currentPosition);
+    });
+    controlDiv.appendChild(controlUI);
+    map.current?.controls[google.maps.ControlPosition.RIGHT_CENTER].push(
+      controlDiv,
+    );
   };
 
   const visualiseMarkers = () => {
@@ -151,8 +163,8 @@ export default function Map({
                 return {
                   ...editedMarker,
                   position: {
-                    longitude: mapMarker.position?.lng as number,
-                    latitude: mapMarker.position?.lat as number,
+                    lat: mapMarker.position?.lat as number,
+                    lng: mapMarker.position?.lng as number,
                   },
                 };
               }
@@ -198,6 +210,7 @@ export default function Map({
           visualiseMarkers();
           if (currentPosition) {
             visualiseCurrentPositionMarker(currentPosition);
+            addCurrentPositionButton(currentPosition);
           }
           return Promise.resolve();
         })

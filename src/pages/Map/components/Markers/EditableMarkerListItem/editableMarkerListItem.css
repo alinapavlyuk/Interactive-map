@@ -15,7 +15,7 @@
     height: 30px;
 }
 
-.markerTitleInput {
+.marker-title-input {
     flex-grow: 1;
     box-sizing: border-box;
     width: 200px;
@@ -26,7 +26,7 @@
     border-radius: 4px;
 }
 
-.markerTypeSelect {
+.marker-type-select {
     padding: 5px;
     background-color: #333;
     color: #fff;
@@ -35,7 +35,7 @@
     cursor: pointer;
 }
 
-.markerButton {
+.marker-button {
     padding: 8px 12px;
     background-color: rgba(40, 40, 40, 1);
     color: #fff;
@@ -45,11 +45,12 @@
     transition: background-color 0.3s ease;
 }
 
-.markerButton:hover {
+.marker-button:hover {
     background-color: #242424;
 }
 
-.textButton {
+.text-button {
     padding: 8px 6px;
     font-size: 12px;
 }
+

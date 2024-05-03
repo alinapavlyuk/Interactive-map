@@ -3,6 +3,7 @@ import Map from "../../../../components/Map/Map.tsx";
 import { IMarker } from "../../../../types/IMarker.ts";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import ActionButtons from "../ActionButtons/ActionButtons.tsx";
+import { useNavigate } from "react-router-dom";
 
 type MapPageContentProps = {
   mode: string | null;
@@ -15,21 +16,26 @@ export default function MapPageContent({
   markers,
   setMarkers,
 }: MapPageContentProps) {
-  const [centerPosition, setCenterPosition] = useState({ lat: 0, lng: 0 });
-  const [editedMarkers, setEditedMarkers] = useState(
+  const navigate = useNavigate();
+  const [centerPosition, setCenterPosition] = useState({
+    lat: 0,
+    lng: 0,
+  });
+  const [editedMarkers, setEditedMarkers] = useState<IMarker[]>(
     JSON.parse(JSON.stringify(markers)),
   );
   const [changesMade, setChangesMade] = useState(false);
-  function handleSelectMarkerListItem(latitude: number, longitude: number) {
+  function handleSelectMarkerListItem(lat: number, lng: number) {
     setCenterPosition((prevCenter) => {
-      if (prevCenter.lat !== latitude && prevCenter.lng !== longitude) {
-        return { lat: latitude, lng: longitude };
+      if (prevCenter.lat !== lat && prevCenter.lng !== lng) {
+        return { lat: lat, lng: lng };
       }
       return prevCenter;
     });
   }
 
   function handleSave() {
+    navigate("/map?mode=view");
     setMarkers(JSON.parse(JSON.stringify(editedMarkers)));
     setChangesMade(false);
   }
@@ -39,15 +45,33 @@ export default function MapPageContent({
     setChangesMade(false);
   }
 
+  function handleAdd() {
+    const newMarkerPosition = {
+      lat: centerPosition.lat + 1,
+      lng: centerPosition.lng + 1,
+    };
+    setEditedMarkers((prevMarkers) => {
+      const newMarker = {
+        title: "New Marker",
+        position: newMarkerPosition,
+        type: "green",
+        id: `${Date.now().toString()}`,
+      };
+      return [...prevMarkers, newMarker];
+    });
+    setCenterPosition(newMarkerPosition);
+    setChangesMade(true);
+  }
+
   useEffect(() => {
     setEditedMarkers(JSON.parse(JSON.stringify(markers)));
   }, [markers]);
 
-  console.log('editedMarkers = markers ? ', editedMarkers === markers);
+  // console.log("editedMarkers = markers ? ", editedMarkers === markers);
   useEffect(() => {
     return () => {
-      console.log('DESTROY 111');
-    }
+      console.log("DESTROY 111");
+    };
   }, []);
   return (
     <>
@@ -71,6 +95,7 @@ export default function MapPageContent({
               isDisabled={!changesMade}
               onSave={handleSave}
               onCancel={handleCancel}
+              onAdd={handleAdd}
             />
           ) : null
         }
