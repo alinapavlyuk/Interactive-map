@@ -40,9 +40,15 @@ export default function MapPageContent({
   }
 
   useEffect(() => {
-    setEditedMarkers(markers);
+    setEditedMarkers(JSON.parse(JSON.stringify(markers)));
   }, [markers]);
 
+  console.log('editedMarkers = markers ? ', editedMarkers === markers);
+  useEffect(() => {
+    return () => {
+      console.log('DESTROY 111');
+    }
+  }, []);
   return (
     <>
       <Map

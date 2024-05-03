@@ -9,21 +9,27 @@ export default function MapPageContainer() {
   const [searchParams] = useSearchParams();
   const mode = searchParams.get("mode");
   const [markers, setMarkers] = useState<IMarker[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     axios
       .get("http://localhost:3001/markers")
       .then((response) => {
         setMarkers(response.data);
+        setIsLoading(false)
       })
       .catch((error) => {
         console.error("Error getting theme from API:", error);
+        setIsLoading(false);
       });
   }, []);
 
   return (
-    <Layout>
-      <MapPageContent mode={mode} markers={markers} setMarkers={setMarkers} />
+    <Layout isLoading={isLoading}>
+      <MapPageContent mode={mode}
+                      markers={markers}
+                      setMarkers={setMarkers}
+      />
     </Layout>
   );
 }

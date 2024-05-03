@@ -58,15 +58,6 @@ export default function MarkersList({
     setChangesMade(true);
   }
 
-  // useEffect(() => {
-  //   const confirmButtons = document
-  //     .getElementById("confirm-changes-buttons")
-  //     ?.querySelectorAll("*");
-  //   confirmButtons?.forEach((button) => {
-  //     button.removeAttribute("disabled");
-  //   });
-  // }, [markers]);
-
   return (
     <div className="markers">
       {ActionButtons}

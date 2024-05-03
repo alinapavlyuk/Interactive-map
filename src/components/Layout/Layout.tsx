@@ -6,13 +6,16 @@ import "./layoutStyles.css";
 
 type LayoutProps = {
   children: React.ReactNode;
+  isLoading: boolean;
 };
 
-export default function Layout({ children }: LayoutProps) {
+export default function Layout({ children, isLoading }: LayoutProps) {
   return (
     <div id="container">
       <Header />
-      <Content>{children}</Content>
+      <Content>{isLoading ? <div>
+        ...Loading
+      </div>: children}</Content>
       <Footer />
     </div>
   );
