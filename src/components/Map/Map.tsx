@@ -138,7 +138,6 @@ export default function Map({
     controlUI.classList.add("ui-button");
     controlUI.innerHTML =
       '<img src="location_icon.png" id="current_location_button"/>';
-    //controlUI.innerText = "Reset the example";
     controlUI.addEventListener("click", () => {
       setCenterPosition(currentPosition);
     });
