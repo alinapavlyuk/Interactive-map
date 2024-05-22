@@ -24,7 +24,17 @@ export default function MapPageContent({
   const [editedMarkers, setEditedMarkers] = useState<IMarker[]>(
     JSON.parse(JSON.stringify(markers)),
   );
+  const [changes, setChanges] = useState<{
+    added: IMarker[];
+    edited: IMarker[];
+    deleted: string[];
+  }>({
+    added: [],
+    edited: [],
+    deleted: [],
+  });
   const [changesMade, setChangesMade] = useState(false);
+
   function handleSelectMarkerListItem(lat: number, lng: number) {
     setCenterPosition((prevCenter) => {
       if (prevCenter.lat !== lat && prevCenter.lng !== lng) {
@@ -38,28 +48,87 @@ export default function MapPageContent({
     navigate("/map?mode=view");
     setMarkers(JSON.parse(JSON.stringify(editedMarkers)));
     setChangesMade(false);
+    console.log(changes);
   }
 
   function handleCancel() {
     setEditedMarkers(JSON.parse(JSON.stringify(markers)));
+    setChanges({ added: [], edited: [], deleted: [] });
     setChangesMade(false);
   }
 
-  function handleAdd() {
+  function handleAddMarker() {
     const newMarkerPosition = {
       lat: centerPosition.lat + 1,
       lng: centerPosition.lng + 1,
     };
+    const newMarker = {
+      title: "New Marker",
+      position: newMarkerPosition,
+      type: "green",
+      id: `${Date.now().toString()}`,
+    };
     setEditedMarkers((prevMarkers) => {
-      const newMarker = {
-        title: "New Marker",
-        position: newMarkerPosition,
-        type: "green",
-        id: `${Date.now().toString()}`,
-      };
       return [...prevMarkers, newMarker];
     });
     setCenterPosition(newMarkerPosition);
+    setChanges((prev) => ({ ...prev, added: [...prev.added, newMarker] }));
+    setChangesMade(true);
+  }
+
+  function handleChangeMarker(changedMarker: IMarker) {
+    setMarkers((prevMarkers) => {
+      return prevMarkers.map((prevMarker) => {
+        if (prevMarker.id === changedMarker.id) {
+          return changedMarker;
+        }
+        return prevMarker;
+      });
+    });
+    setChanges((prev) => {
+      const isAdded = prev.added.some(
+        (marker) => marker.id === changedMarker.id,
+      );
+      const isEdited = prev.edited.some(
+        (marker) => marker.id === changedMarker.id,
+      );
+
+      if (isAdded) {
+        return {
+          ...prev,
+          added: prev.added.map((marker) =>
+            marker.id === changedMarker.id ? changedMarker : marker,
+          ),
+        };
+      }
+
+      if (isEdited) {
+        return {
+          ...prev,
+          edited: prev.edited.map((marker) =>
+            marker.id === changedMarker.id ? changedMarker : marker,
+          ),
+        };
+      }
+
+      return {
+        ...prev,
+        edited: [...prev.edited, changedMarker],
+      };
+    });
+    setChangesMade(true);
+  }
+
+  function handleDeleteMarker(markerId: string) {
+    setMarkers((prevMarkers) => {
+      return prevMarkers.filter((prevMarker) => prevMarker.id !== markerId);
+    });
+    setChanges((prev) => ({
+      ...prev,
+      deleted: [...prev.deleted, markerId],
+      added: prev.added.filter((marker) => marker.id !== markerId),
+      edited: prev.edited.filter((marker) => marker.id !== markerId),
+    }));
     setChangesMade(true);
   }
 
@@ -67,7 +136,6 @@ export default function MapPageContent({
     setEditedMarkers(JSON.parse(JSON.stringify(markers)));
   }, [markers]);
 
-  // console.log("editedMarkers = markers ? ", editedMarkers === markers);
   useEffect(() => {
     return () => {
       console.log("DESTROY 111");
@@ -86,16 +154,16 @@ export default function MapPageContent({
       <MarkersList
         mode={mode}
         markers={mode === "manage" ? editedMarkers : markers}
-        setMarkers={setEditedMarkers}
-        setChangesMade={setChangesMade}
         onSelectMarker={handleSelectMarkerListItem}
+        recordMarkerChange={handleChangeMarker}
+        recordMarkerDelete={handleDeleteMarker}
         ActionButtons={
           mode === "manage" ? (
             <ActionButtons
               isDisabled={!changesMade}
               onSave={handleSave}
               onCancel={handleCancel}
-              onAdd={handleAdd}
+              onAdd={handleAddMarker}
             />
           ) : null
         }

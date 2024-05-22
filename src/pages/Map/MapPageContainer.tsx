@@ -13,10 +13,10 @@ export default function MapPageContainer() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/markers")
+      .get("http://localhost:3000/markers")
       .then((response) => {
         setMarkers(response.data);
-        setIsLoading(false)
+        setIsLoading(false);
       })
       .catch((error) => {
         console.error("Error getting theme from API:", error);
@@ -26,10 +26,7 @@ export default function MapPageContainer() {
 
   return (
     <Layout isLoading={isLoading}>
-      <MapPageContent mode={mode}
-                      markers={markers}
-                      setMarkers={setMarkers}
-      />
+      <MapPageContent mode={mode} markers={markers} setMarkers={setMarkers} />
     </Layout>
   );
 }

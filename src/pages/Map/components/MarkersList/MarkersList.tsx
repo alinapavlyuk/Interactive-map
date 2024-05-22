@@ -2,14 +2,14 @@ import MarkerListItem from "../Markers/MarkerListItem/MarkerListItem.tsx";
 import EditableMarkerListItem from "../Markers/EditableMarkerListItem/EditableMarkerListItem.tsx";
 import { IMarker } from "../../../../types/IMarker.ts";
 import "./markersList.css";
-import { Dispatch, ReactElement, SetStateAction } from "react";
+import { ReactElement } from "react";
 
 type MapViewProps = {
   mode: string | null;
   markers: IMarker[];
   onSelectMarker: (lat: number, lng: number) => void;
-  setMarkers: Dispatch<SetStateAction<IMarker[]>>;
-  setChangesMade: Dispatch<SetStateAction<boolean>>;
+  recordMarkerChange: (marker: IMarker) => void;
+  recordMarkerDelete: (markerId: string) => void;
   ActionButtons: ReactElement | null;
 };
 
@@ -17,45 +17,20 @@ export default function MarkersList({
   mode,
   markers,
   onSelectMarker,
-  setMarkers,
-  setChangesMade,
+  recordMarkerChange,
+  recordMarkerDelete,
   ActionButtons,
 }: MapViewProps) {
   function handleTitleChange(marker: IMarker, newTitle: string) {
-    setMarkers((prevMarkers) => {
-      return prevMarkers.map((prevMarker) => {
-        if (prevMarker.id === marker.id) {
-          return {
-            ...prevMarker,
-            title: newTitle,
-          };
-        }
-        return prevMarker;
-      });
-    });
-    setChangesMade(true);
+    recordMarkerChange({ ...marker, title: newTitle });
   }
 
   function handleTypeChange(marker: IMarker, newType: string) {
-    setMarkers((prevMarkers) => {
-      return prevMarkers.map((prevMarker) => {
-        if (prevMarker.id === marker.id) {
-          return {
-            ...prevMarker,
-            type: newType,
-          };
-        }
-        return prevMarker;
-      });
-    });
-    setChangesMade(true);
+    recordMarkerChange({ ...marker, type: newType });
   }
 
   function handleMarkerDelete(marker: IMarker) {
-    setMarkers((prevMarkers) => {
-      return prevMarkers.filter((prevMarker) => prevMarker.id !== marker.id);
-    });
-    setChangesMade(true);
+    recordMarkerDelete(marker.id);
   }
 
   return (
