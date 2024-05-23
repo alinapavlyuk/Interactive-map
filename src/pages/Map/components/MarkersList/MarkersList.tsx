@@ -9,7 +9,7 @@ type MapViewProps = {
   markers: IMarker[];
   onSelectMarker: (lat: number, lng: number) => void;
   recordMarkerChange: (marker: IMarker) => void;
-  recordMarkerDelete: (markerId: string) => void;
+  recordMarkerDelete: (markerId: number) => void;
   ActionButtons: ReactElement | null;
 };
 
@@ -36,32 +36,36 @@ export default function MarkersList({
   return (
     <div className="markers">
       {ActionButtons}
-      <ul className="markers-list" id="list">
-        {markers.map((marker) => {
-          if (mode == "view") {
-            return (
-              <MarkerListItem
-                key={marker.id}
-                marker={marker}
-                onSelectMarker={onSelectMarker}
-              />
-            );
-          } else if (mode == "manage") {
-            return (
-              <EditableMarkerListItem
-                key={marker.id}
-                marker={marker}
-                onChangeTitle={handleTitleChange}
-                onChangeType={handleTypeChange}
-                onDeleteMarker={handleMarkerDelete}
-                onSelectMarker={onSelectMarker}
-              />
-            );
-          } else {
-            return <span>Page mode problem.</span>;
-          }
-        })}
-      </ul>
+      {markers.length > 0 ? (
+        <ul className="markers-list" id="list">
+          {markers.map((marker) => {
+            if (mode == "view") {
+              return (
+                <MarkerListItem
+                  key={marker.id}
+                  marker={marker}
+                  onSelectMarker={onSelectMarker}
+                />
+              );
+            } else if (mode == "manage") {
+              return (
+                <EditableMarkerListItem
+                  key={marker.id}
+                  marker={marker}
+                  onChangeTitle={handleTitleChange}
+                  onChangeType={handleTypeChange}
+                  onDeleteMarker={handleMarkerDelete}
+                  onSelectMarker={onSelectMarker}
+                />
+              );
+            } else {
+              return <span>Page mode problem.</span>;
+            }
+          })}
+        </ul>
+      ) : (
+        <span id="markers-no-found-span">No markers found.</span>
+      )}
     </div>
   );
 }

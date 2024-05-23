@@ -1,0 +1,23 @@
+#filter {
+    display: flex;
+    justify-content: space-between;
+}
+
+.filter-button {
+    height: 20px;
+    width: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.87);
+    cursor: pointer;
+    transition: border 0.3s, box-shadow 0.3s;
+}
+
+.filter-button:hover {
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+.filter-button.active {
+    border: 2px solid #242424;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+}

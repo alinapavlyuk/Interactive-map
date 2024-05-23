@@ -4,6 +4,9 @@ import { IMarker } from "../../../../types/IMarker.ts";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import ActionButtons from "../ActionButtons/ActionButtons.tsx";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import ColorFilter from "../FilterButton/ColorFilter.tsx";
+import { markerTypes } from "../../../../constants/markerTypes.ts";
 
 type MapPageContentProps = {
   mode: string | null;
@@ -27,7 +30,7 @@ export default function MapPageContent({
   const [changes, setChanges] = useState<{
     added: IMarker[];
     edited: IMarker[];
-    deleted: string[];
+    deleted: number[];
   }>({
     added: [],
     edited: [],
@@ -45,10 +48,35 @@ export default function MapPageContent({
   }
 
   function handleSave() {
-    navigate("/map?mode=view");
-    setMarkers(JSON.parse(JSON.stringify(editedMarkers)));
-    setChangesMade(false);
-    console.log(changes);
+    const savePromises: Promise<any>[] = [];
+
+    changes.added.forEach((marker) => {
+      savePromises.push(axios.post("http://localhost:3000/markers", marker));
+    });
+
+    changes.edited.forEach((marker) => {
+      savePromises.push(
+        axios.put(`http://localhost:3000/markers/${marker.id}`, marker),
+      );
+    });
+
+    changes.deleted.forEach((markerId) => {
+      savePromises.push(
+        axios.delete(`http://localhost:3000/markers/${markerId}`),
+      );
+    });
+
+    Promise.all(savePromises)
+      .then(() => {
+        alert("Changes saved successfully!");
+        setMarkers(JSON.parse(JSON.stringify(editedMarkers)));
+        setChanges({ added: [], edited: [], deleted: [] });
+        setChangesMade(false);
+        navigate("/map?mode=view");
+      })
+      .catch((error) => {
+        console.error("Error saving changes:", error);
+      });
   }
 
   function handleCancel() {
@@ -66,7 +94,7 @@ export default function MapPageContent({
       title: "New Marker",
       position: newMarkerPosition,
       type: "green",
-      id: `${Date.now().toString()}`,
+      id: Date.now(),
     };
     setEditedMarkers((prevMarkers) => {
       return [...prevMarkers, newMarker];
@@ -77,7 +105,7 @@ export default function MapPageContent({
   }
 
   function handleChangeMarker(changedMarker: IMarker) {
-    setMarkers((prevMarkers) => {
+    setEditedMarkers((prevMarkers) => {
       return prevMarkers.map((prevMarker) => {
         if (prevMarker.id === changedMarker.id) {
           return changedMarker;
@@ -119,17 +147,42 @@ export default function MapPageContent({
     setChangesMade(true);
   }
 
-  function handleDeleteMarker(markerId: string) {
+  function handleDeleteMarker(markerId: number) {
     setMarkers((prevMarkers) => {
       return prevMarkers.filter((prevMarker) => prevMarker.id !== markerId);
     });
-    setChanges((prev) => ({
-      ...prev,
-      deleted: [...prev.deleted, markerId],
-      added: prev.added.filter((marker) => marker.id !== markerId),
-      edited: prev.edited.filter((marker) => marker.id !== markerId),
-    }));
+    setChanges((prev) => {
+      const isAdded = prev.added.some((marker) => marker.id === markerId);
+
+      if (isAdded) {
+        return {
+          ...prev,
+          added: prev.added.filter((marker) => marker.id !== markerId),
+        };
+      }
+
+      return {
+        ...prev,
+        deleted: [...prev.deleted, markerId],
+        edited: prev.edited.filter((marker) => marker.id !== markerId),
+      };
+    });
     setChangesMade(true);
+  }
+
+  function handleColorFilter(type: string | null) {
+    const url =
+      type === null
+        ? "http://localhost:3000/markers"
+        : `http://localhost:3000/markers/${type}`;
+    axios
+      .get(url)
+      .then((response) => {
+        setMarkers(response.data);
+      })
+      .catch((error) => {
+        console.error("Error getting theme from API:", error);
+      });
   }
 
   useEffect(() => {
@@ -165,7 +218,12 @@ export default function MapPageContent({
               onCancel={handleCancel}
               onAdd={handleAddMarker}
             />
-          ) : null
+          ) : (
+            <ColorFilter
+              colors={markerTypes}
+              onSelectColor={handleColorFilter}
+            />
+          )
         }
       />
     </>

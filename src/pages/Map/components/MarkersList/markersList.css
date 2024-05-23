@@ -31,6 +31,10 @@
     flex-grow: 1;
 }
 
+#markers-no-found-span {
+    margin-top: 20px;
+    text-align: center;
+}
 
 
 
