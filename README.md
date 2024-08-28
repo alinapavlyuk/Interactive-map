@@ -1,30 +1,18 @@
 # React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Google Maps API map where you can add your own markers and track them.
 
-Currently, two official plugins are available:
+First login:
+<img width="1294" alt="Screenshot 2024-08-28 at 21 35 31" src="https://github.com/user-attachments/assets/c5575067-01d4-4f35-b4e3-89947cf0bb83">
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+After login enable location services:
+<img width="1402" alt="Screenshot 2024-08-28 at 21 48 38" src="https://github.com/user-attachments/assets/645bb588-9c6d-45dc-889c-c2b32b102fac">
 
-## Expanding the ESLint configuration
+Main page. 
+Grey marker shows current location. Current location button is custom.
+By clicking on the marker from the list map is centered at its position.
+<img width="1363" alt="Screenshot 2024-08-28 at 22 28 54" src="https://github.com/user-attachments/assets/d374b4b9-1231-4b1c-bec2-1cfa46cb4a7d">
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+To manage markers go to 'Manage' page.
+You can change name, color and position of the marker (drag and drop).
+<img width="1256" alt="Screenshot 2024-08-28 at 22 32 18" src="https://github.com/user-attachments/assets/3c262142-4bfe-49fc-ba75-eb7430fd67a0">
